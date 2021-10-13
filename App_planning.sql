@@ -229,7 +229,8 @@ INSERT INTO Amis_de_l_utilisateur (idPersonne,idUtilisateur) VALUES
 INSERT INTO Calendrier (Date_activité,Nom_activité,idUtilisateur) VALUES 
 ('2021-07-05','Assassinat',1),
 ('2021-10-05' ,'Enquete Ingénieure',1),
-('2021-09-14','Révision et DM',1);
+('2021-09-14','Révision et DM',1),
+('2022-11-01','Stage de recherche', 1);
 
 INSERT INTO Cagnotte (Nom_cagnotte,Total_cagnotte,idUtilisateur) VALUES 
 ('USA',500,1),
@@ -251,7 +252,8 @@ INSERT INTO Objectif_ultime_actuel (idObjectif,Nom_cagnotte) VALUES
 
 INSERT INTO Dates_évènement (Date_event,Accord_sur_la_date,idUtilisateur,idPersonne) VALUES 
 ('2021-07-05',TRUE,'1','3'),
-('2021-10-05',TRUE,'1','2');
+('2021-10-05',TRUE,'1','2'),
+('2022-11-01',TRUE,'1','2');
 
 INSERT INTO loisir_commun (Nom_loisir,idPersonne) VALUES 
 ('Base de données','2'),
@@ -267,7 +269,8 @@ INSERT INTO Budget_utilisateur(id_Budget,rentrée_d_argent,dépenses_du_mois,En_
 
 INSERT INTO Evénement(Nom_evenement,Nom_organisateur,Lieu,Annulé,coût_évènement,id_Budget,Date_event,Date_activité,Nom_activité,idUtilisateur) VALUES
 ('road trip en corée','JONG UN','Corée',FALSE,10000,1,'2021-07-05','2021-07-05','Assassinat',1),
-('enquete ingé','GRELAUD','Paris',FALSE,10,1,'2021-10-05','2021-10-05','Enquete Ingénieure',1);
+('enquete ingé','GRELAUD','Paris',FALSE,10,1,'2021-10-05','2021-10-05','Enquete Ingénieure',1),
+('stage japon','DUMAS','Nagoya',FALSE,3000,1,'2022-11-01','2022-11-01','Stage de recherche',1);
 
 
 INSERT INTO Séance_révision(id_Seance_revision,Matière,Travail_a_faire,date_rendu,date_seance,heure_seance,coût_séance,id_Budget,Date_activité,Nom_activité,idUtilisateur) VALUES
