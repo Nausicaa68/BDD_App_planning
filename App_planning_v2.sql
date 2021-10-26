@@ -47,9 +47,10 @@ CREATE TABLE Utilisateur(
 )Engine = 'InnoDb';
 
 CREATE TABLE Camarades(
+	id_camarade INT,
    idPersonne_1 INT, -- id du camarade
    idUtilisateur INT NOT NULL, -- id de l'utilisateur
-   PRIMARY KEY(idPersonne_1),
+   PRIMARY KEY(id_camarade),
    FOREIGN KEY(idPersonne_1) REFERENCES Personne(idPersonne),
    FOREIGN KEY(idUtilisateur) REFERENCES Utilisateur(idUtilisateur)
 )Engine = 'InnoDb';
@@ -63,9 +64,10 @@ CREATE TABLE Comptes_Reseaux_sociaux(
 )Engine = 'InnoDb';
 
 CREATE TABLE Amis(
+	id_amis INT, 
    idPersonne_1 INT, -- id de l'ami
    idUtilisateur INT NOT NULL, -- id de l'utilisateur
-   PRIMARY KEY(idPersonne_1),
+   PRIMARY KEY(id_amis),
    FOREIGN KEY(idPersonne_1) REFERENCES Personne(idPersonne),
    FOREIGN KEY(idUtilisateur) REFERENCES Utilisateur(idUtilisateur)
 )Engine = 'InnoDb';
@@ -105,32 +107,35 @@ CREATE TABLE Objectif_ultime(
 )Engine = 'InnoDb';
 
 CREATE TABLE Dates_event(
-   date_event DATE,
+   id_date INT,
+   date_event DATE NOT NULL,
    accord BOOLEAN,
    idUtilisateur INT NOT NULL,
-   idPersonne_1 INT NOT NULL,
-   PRIMARY KEY(date_event),
+   id_amis INT NOT NULL,
+   PRIMARY KEY(id_date),
    FOREIGN KEY(idUtilisateur) REFERENCES Utilisateur(idUtilisateur),
-   FOREIGN KEY(idPersonne_1) REFERENCES Amis(idPersonne_1)
+   FOREIGN KEY(id_amis) REFERENCES Amis(id_amis)
 )Engine = 'InnoDb';
 
 CREATE TABLE Loisir_commun(
+	id_loisir INT NOT NULL,
    nom_loisir VARCHAR(50),
    idUtilisateur INT NOT NULL,
-   idPersonne_1 INT NOT NULL,
-   PRIMARY KEY(nom_loisir),
+   id_amis INT NOT NULL,
+   PRIMARY KEY(id_loisir),
    FOREIGN KEY(idUtilisateur) REFERENCES Utilisateur(idUtilisateur),
-   FOREIGN KEY(idPersonne_1) REFERENCES Amis(idPersonne_1)
+   FOREIGN KEY(id_amis) REFERENCES Amis(id_amis)
 )Engine = 'InnoDb';
 
 CREATE TABLE Adresse_favorites(
+   id_adresse INT NOT NULL,
    num_rue VARCHAR(50),
    nom_rue VARCHAR(50),
    codepostal VARCHAR(50),
    ville VARCHAR(50),
-   nom_loisir VARCHAR(50) NOT NULL,
-   PRIMARY KEY(num_rue, nom_rue, codepostal, ville),
-   FOREIGN KEY(nom_loisir) REFERENCES Loisir_commun(nom_loisir)
+   id_loisir INT NOT NULL,
+   PRIMARY KEY(id_adresse),
+   FOREIGN KEY(id_loisir) REFERENCES Loisir_commun(id_loisir)
 )Engine = 'InnoDb';
 
 CREATE TABLE Budget_utilisateur(
@@ -153,13 +158,13 @@ CREATE TABLE Evenement(
    annule BOOLEAN,
    cout_event INT,
    idUtilisateur INT NOT NULL,
-   idPersonne_1 INT NOT NULL,
-   date_event DATE NOT NULL,
+   id_amis INT NOT NULL,
+   id_date INT NOT NULL,
    id_Budget INT NOT NULL,
    PRIMARY KEY(idEvenement),
    FOREIGN KEY(idUtilisateur) REFERENCES Utilisateur(idUtilisateur),
-   FOREIGN KEY(idPersonne_1) REFERENCES Amis(idPersonne_1),
-   FOREIGN KEY(date_event) REFERENCES Dates_event(date_event),
+   FOREIGN KEY(id_amis) REFERENCES Amis(id_amis),
+   FOREIGN KEY(id_date) REFERENCES Dates_event(id_date),
    FOREIGN KEY(id_Budget) REFERENCES Budget_utilisateur(id_Budget)
 )Engine = 'InnoDb';
 
@@ -209,15 +214,15 @@ INSERT INTO Utilisateur (idUtilisateur) VALUES
 (2); 
 
 
-INSERT INTO Camarades (idPersonne_1, idUtilisateur) VALUES 
-(2,1),
-(3,1),
-(4,1),
-(5,1),
-(6,1);
--- (1,2),
--- (3,2),
--- (7,2);
+INSERT INTO Camarades (id_camarade, idPersonne_1, idUtilisateur) VALUES 
+(1,2,1),
+(2,3,1),
+(3,4,1),
+(4,5,1),
+(5,6,1),
+(6,1,2),
+(7,3,2),
+(8,7,2);
 
 
 INSERT INTO Comptes_Reseaux_sociaux (id_reseau, nom_reseau, idPersonne) VALUES 
@@ -242,14 +247,14 @@ INSERT INTO Comptes_Reseaux_sociaux (id_reseau, nom_reseau, idPersonne) VALUES
 (16, 'Twitter', 3);
 
 
--- INSERT INTO Amis (idPersonne_1, idUtilisateur) VALUES 
--- (2,1), 
--- (3,1), 
--- (4,1),
--- (5,1),
--- (1,2),
--- (3,2),
--- (6,2);
+INSERT INTO Amis (id_amis, idPersonne_1, idUtilisateur) VALUES 
+(1,2,1), 
+(2,3,1), 
+(3,4,1),
+(4,5,1),
+(5,1,2),
+(6,3,2),
+(7,6,2);
 
 INSERT INTO Cagnotte (idCagnotte, nom, total, idUtilisateur) VALUES 
 (1, 'CagnotteGuillaume', 9000, 1),
@@ -271,40 +276,43 @@ INSERT INTO Objectif_ultime (idObjectif, idCagnotte) VALUES
 (3, 1),
 (4, 3);
 
--- INSERT INTO Dates_event (date_event, accord, idUtilisateur, idPersonne_1) VALUES 
--- ('2021-07-05', TRUE, 1, 3),
--- ('2021-10-05', TRUE, 1, 2),
--- ('2022-11-01', FALSE, 1, 5);
+INSERT INTO Dates_event (id_date, date_event, accord, idUtilisateur, id_amis) VALUES 
+(1, '2021-07-05', TRUE, 1, 3),
+(2, '2021-10-05', TRUE, 1, 2),
+(3, '2022-11-01', FALSE, 1, 5),
+(4, '2021-09-01', TRUE, 1, 5);
 
--- INSERT INTO Loisir_commun (nom_loisir, idUtilisateur, idPersonne_1) VALUES 
--- ('Base de données', 1, 2),
--- ('Maquettes militaires', 2, 6),
--- ('Cuisine', 1, 5),
--- ('LoL', 2, 6);
+INSERT INTO Loisir_commun (id_loisir, nom_loisir, idUtilisateur, id_amis) VALUES 
+(1, 'Base de données', 1, 2),
+(2, 'Maquettes militaires', 2, 7),
+(3, 'Maquettes militaires', 2, 5),
+(4, 'Cuisine', 1, 1),
+(5, 'LoL', 2, 6);
 
-INSERT INTO Adresse_favorites (num_rue, nom_rue, codepostal, ville, nom_loisir) VALUES 
-('5','Rue des Galvents','92140','Clamart','Base de données'),
-('7','Rue Gustave','94140','l_hay_rose','Base de données'),
-('55','Ryongsong','Pyongyang','Pyongyang','Maquettes militaires'),
-('1','Rue de Lucifer','66666','Hell','Cuisine'),
-('5','Rue des Galvents','92140','Clamart','LoL');
+INSERT INTO Adresse_favorites (id_adresse, num_rue, nom_rue, codepostal, ville, id_loisir) VALUES 
+(1, '5','Rue des Galvents','92140','Clamart', 1),
+(2, '7','Rue Gustave','94140','l_hay_rose', 1),
+(3, '7','Rue Gustave','94140','l_hay_rose', 3),
+(4, '55','Ryongsong','Pyongyang','Pyongyang', 2),
+(5, '1','Rue de Lucifer','66666','Hell', 4),
+(6, '5','Rue des Galvents','92140','Clamart', 5);
 
 INSERT INTO Budget_utilisateur(id_Budget, rentree_d_argent, depenses_du_mois, deficit, idCagnotte, idUtilisateur) VALUES 
 (1, 1100, 859, FALSE, 1, 1),
 (2, 100, 200, TRUE, 2, 2),
 (3, 11000, 10000, FALSE, 3, 2);
 
-INSERT INTO Evenement(idEvenement, nom_event, nom_orga, lieu, annule, cout_event, idUtilisateur, idPersonne_1, date_event, id_Budget) VALUES
-(1, 'road trip en corée', 'GRELAUD', 'Corée', FALSE, 10000, 2, 6, '2021-06-05', 3),
-(2, 'enquete ingé', 'GRELAUD', 'Paris', FALSE, 10, 2, 3, '2021-10-05', 2),
-(3, 'stage japon', 'DUMAS', 'Nagoya', FALSE, 3000, 1, 3, '2022-11-01', 1),
-(4, 'revision math', 'DUMAS', 'Villejuif', FALSE, 0, 1, 2, '2021-10-20', 1);
+INSERT INTO Evenement(idEvenement, nom_event, nom_orga, lieu, annule, cout_event, idUtilisateur, id_amis, id_date, id_Budget) VALUES
+(1, 'road trip en corée', 'GRELAUD', 'Pyongyang', FALSE, 10000, 2, 6, 1, 3),
+(2, 'enquete ingé', 'GRELAUD', 'Paris', FALSE, 10, 2, 3, 2, 2),
+(3, 'stage japon', 'DUMAS', 'Nagoya', FALSE, 3000, 1, 3, 3, 1),
+(4, 'revision math', 'DUMAS', 'Villejuif', FALSE, 0, 1, 2, 4, 1);
 
 INSERT INTO Calendrier (idCalendar, idEvenement, idUtilisateur) VALUES 
 (1, 1, 2),
-(1, 2, 2),
-(2, 3, 1),
-(2, 4, 1);
+(2, 2, 2),
+(3, 3, 1),
+(4, 4, 1);
 
 
 INSERT INTO Seance_revision(idEvenement, matiere, travail_a_faire, date_rendu, heure_seance, idUtilisateur) VALUES
